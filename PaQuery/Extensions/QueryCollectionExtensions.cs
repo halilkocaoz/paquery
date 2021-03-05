@@ -22,7 +22,21 @@ namespace PaQuery//.Extensions
             }
             return "?" + queries;
         }
+        private static int? previousPageNumber(int totalPageCount, int currentPage)
+        {
+            if (currentPage <= 1) return null;
+            else if (currentPage > totalPageCount) return totalPageCount;
 
+            return currentPage - 1;
+        }
+
+        private static int? nextPageNumber(int totalPageCount, int currentPage)
+        {
+            if (currentPage >= totalPageCount) return null;
+            else if (currentPage < 1) return 1;
+
+            return currentPage + 1;
+        }
         //todo: change method name
         public static PaginationUrl GetUrls(
             this IQueryCollection queryCollection,
@@ -34,23 +48,7 @@ namespace PaQuery//.Extensions
             string nextUrl = null, prevUrl = null, queries = queryCollection.toStringQueriesWithoutPageQueryKey(pageQueryKey);
             for (int i = -1; i <= 1; i += 2)
             {
-                #region selectPageNumber //todo refactor 
-                int? pageNumber = 0;
-                if (i == (int)PageType.Previous)
-                {
-                    if (currentPage <= 1) pageNumber = null;
-                    else if (currentPage > totalPageCount) pageNumber = totalPageCount;
-
-                    pageNumber = currentPage + i;
-                }
-                else if (i == (int)PageType.Next)
-                {
-                    if (currentPage >= totalPageCount) pageNumber = null;
-                    else if (currentPage < 1) pageNumber = 1;
-
-                    pageNumber = currentPage + i;
-                }
-                #endregion
+                int? pageNumber = i == (int)PageType.Previous ? previousPageNumber(totalPageCount, currentPage) : nextPageNumber(totalPageCount, currentPage);
                 if (pageNumber == null)
                     continue;
 
