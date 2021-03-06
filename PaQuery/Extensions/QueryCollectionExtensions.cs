@@ -8,7 +8,7 @@ namespace PaQuery//.Extensions
 {
     public static class QueryCollectionExtensions
     {
-        public static string toStringQueriesWithoutPageQueryKey(this IQueryCollection queryCollection, string pageQueryKey)
+        public static string ToStringQueriesWithoutPageQueryKey(this IQueryCollection queryCollection, string pageQueryKey)
         {
             var queryArray = queryCollection.ToArray();
             var areThereAnyQueryOtherThanPageQuery = queryArray.Length > 1 || queryArray.Length == 1 && pageQueryKey != queryArray[0].Key;
@@ -20,7 +20,11 @@ namespace PaQuery//.Extensions
                     continue;
                 queries.Append(query.Key + "=" + query.Value[0].Replace(" ", "%20") + "&");
             }
-            return "?" + queries;
+            /* 
+                queries = queryOne=value&
+                after the remove : queryOne=value
+            */
+            return $"?{queries.Remove(queries.Length - 1, 1)}";
         }
         private static int? previousPageNumber(int totalPageCount, int currentPage)
         {
@@ -45,7 +49,7 @@ namespace PaQuery//.Extensions
             int currentPage,
             string pageQueryKey = "page")
         {
-            string nextUrl = null, prevUrl = null, queries = queryCollection.toStringQueriesWithoutPageQueryKey(pageQueryKey);
+            string nextUrl = null, prevUrl = null, queries = queryCollection.ToStringQueriesWithoutPageQueryKey(pageQueryKey);
             for (int i = -1; i <= 1; i += 2)
             {
                 int? pageNumber = i == (int)PageType.Previous ? previousPageNumber(totalPageCount, currentPage) : nextPageNumber(totalPageCount, currentPage);
