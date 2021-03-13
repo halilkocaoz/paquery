@@ -1,6 +1,8 @@
 # paquery
 Simple extension for your API to make requested(IQueryCollection) query string(parameters) compatible with any pagination.
 
+![api-response](https://github.com/halilkocaoz/paquery/blob/main/assets/api-response.gif "api-response")
+
 # Setup
 dotnet add package PaQuery
 
