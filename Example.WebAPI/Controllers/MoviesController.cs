@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using PaQuery;
@@ -13,7 +14,7 @@ namespace Example.WebAPI.Controllers
             public string Title { get; set; }
             public string Director { get; set; }
         }
-        
+
         private List<Movie> movies = new List<Movie>
         {
             new Movie { Title = "Vizontele", Director = "Yılmaz Erdoğan" },
@@ -32,28 +33,28 @@ namespace Example.WebAPI.Controllers
         private static readonly int moviePerPage = 3;
 
         [HttpGet]
-        public IActionResult GetMovies(string title, string director, int page = 1)
+        public IActionResult GetMovies(string title, string director, [Range(1, int.MaxValue)] int page = 1)
         {
-            #region filter
+            #region basic filter
             if (!string.IsNullOrEmpty(title))
                 movies = movies.Where(x => x.Title.ToLower().Contains(title)).ToList();
             if (!string.IsNullOrEmpty(director))
                 movies = movies.Where(x => x.Director.ToLower().Contains(director)).ToList();
             #endregion
 
+            #region basic pagination
             var totalPageCount = 1;
             if (movies.Count > moviePerPage)
             {
-                // calculating how many page
                 totalPageCount = movies.Count % moviePerPage != 0 ? movies.Count / moviePerPage + 1 : movies.Count / moviePerPage;
-                // paginating the movies and get them by requested page number
                 movies = movies.Skip(moviePerPage * (page - 1)).Take(moviePerPage).ToList();
             }
+            #endregion
 
             // *
-            var url = Request.Query.GetUrls(hostPath: $"https://{Request.Host}{Request.Path}", totalPageCount, currentPage: page);
+            var pageInfo = Request.Query.GetPageInfo(hostPath: $"https://{Request.Host}{Request.Path}", totalPageCount, currentPage: page);
 
-            var information = new { url.Next, url.Previous, totalPage = totalPageCount };
+            var information = new { pageInfo.Next, pageInfo.Previous, currentlyPage = page, totalPage = totalPageCount };
 
             return Ok(new { information, data = movies });
         }
