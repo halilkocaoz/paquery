@@ -10,9 +10,3 @@ var information = new { pageInfo.Next, pageInfo.Previous };
 return Ok(new { information,  ....});
 ```
 Look at [MoviesController.cs](https://github.com/halilkocaoz/paquery/blob/main/Example.WebAPI/Controllers/MoviesController.cs) for a detailed example.
-
-## Setup
-~~dotnet add package PaQuery~~
-
-## Status
-No release. Development continues.
