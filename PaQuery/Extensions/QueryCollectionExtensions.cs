@@ -31,7 +31,7 @@ namespace PaQuery//.Extensions
             int currentPage,
             string pageQueryKey = "page")
         {
-            var pagination = new PageInfo(); 
+            var pagination = new PageInfo();
             string queryString = queryCollection.ToStringQueriesWithoutPageQueryKey(pageQueryKey);
 
             for (sbyte i = (sbyte)PageType.Previous; i <= (sbyte)PageType.Next; i += 2)
@@ -40,11 +40,7 @@ namespace PaQuery//.Extensions
                 if (pageNumber == null)
                     continue;
 
-                var url = string.IsNullOrEmpty(queryString) is false
-                ? $"{hostPath}{queryString}&{pageQueryKey}={pageNumber}"
-                : $"{hostPath}?{pageQueryKey}={pageNumber}";
-
-                pagination.SetUrlByPageType((PageType)i, url);
+                pagination.SetUrls((PageType)i, queryString, pageQueryKey, hostPath, (int)pageNumber);
             }
             return pagination;
         }

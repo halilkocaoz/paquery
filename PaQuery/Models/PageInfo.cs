@@ -7,8 +7,12 @@ namespace PaQuery.Models
         public string Next { get; private set; }
         public string Previous { get; private set; }
 
-        public void SetUrlByPageType(PageType pageType, string url)
+        public void SetUrls(PageType pageType, string queryString, string pageQueryKey, string hostPath, int pageNumber)
         {
+            var url = string.IsNullOrEmpty(queryString) is false
+                ? $"{hostPath}{queryString}&{pageQueryKey}={pageNumber}"
+                : $"{hostPath}?{pageQueryKey}={pageNumber}";
+            
             if (pageType == PageType.Previous)
                 this.Previous = url;
             else
