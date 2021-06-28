@@ -7,6 +7,34 @@ namespace PaQuery.Tests
 {
     public class PageInfoTests
     {
+
+        [Test]
+        public void SetUrlsTests()
+        {
+            var pageInfo = new PageInfo();
+            const string hostPath = "api.testdomain.com", pageQueryKey = "page";
+            string queryString;
+            const int selectedPageNumber = 5;
+
+            #region type1
+            queryString = "?parameter=Value";
+            pageInfo.SetUrls(PageType.Next, queryString, pageQueryKey, hostPath, selectedPageNumber);
+            Assert.AreEqual($"{hostPath}{queryString}&{pageQueryKey}={selectedPageNumber}", pageInfo.Next);
+            #endregion
+
+            #region type2
+            queryString = null;
+            pageInfo.SetUrls(PageType.Next, queryString, pageQueryKey, hostPath, selectedPageNumber);
+            Assert.AreEqual($"{hostPath}?{pageQueryKey}={selectedPageNumber}", pageInfo.Next);
+            #endregion
+
+            #region type3
+            queryString = string.Empty;
+            pageInfo.SetUrls(PageType.Next, queryString, pageQueryKey, hostPath, selectedPageNumber);
+            Assert.AreEqual($"{hostPath}?{pageQueryKey}={selectedPageNumber}", pageInfo.Next);
+            #endregion
+        }
+
         struct SubTest
         {
             public string Name;
@@ -27,7 +55,6 @@ namespace PaQuery.Tests
             new SubTest { Name = "G. currentPage - 1", Expected = 49, Values = new int[]{100, 50} },
             new SubTest { Name = "H. currentPage - 1", Expected = 1, Values = new int[]{100, 2} },
         };
-
         [Test]
         public void PreviousPageNumberTests()
         {
@@ -37,6 +64,7 @@ namespace PaQuery.Tests
                 Assert.AreEqual(test.Expected, got, $"Test name: {test.Name}");
             }
         }
+
         List<SubTest> nextPageNumberSubTests = new List<SubTest>
         {
             new SubTest { Name = "A. RETURN NULL: totalPage > 1, currentPage >= totalPage", Expected = null, Values = new int[] {100, 100} },
@@ -49,7 +77,6 @@ namespace PaQuery.Tests
             new SubTest { Name = "G. currentPage + 1", Expected = 16, Values = new int[]{100, 15} },
             new SubTest { Name = "H. currentPage + 1", Expected = 100, Values = new int[]{100, 99} },
         };
-
         [Test]
         public void NextPageNumberTests()
         {
@@ -59,13 +86,12 @@ namespace PaQuery.Tests
                 Assert.AreEqual(test.Expected, got, $"Test name: {test.Name}");
             }
         }
-        
+
         List<SubTest> selectPageNumberSubTests = new List<SubTest>
         {
             new SubTest { Name = "A. Previous", Expected = 99, Values = new int[]{(int)PageType.Previous, 100, 100} },
             new SubTest { Name = "B. Next", Expected = 100, Values = new int[]{(int)PageType.Next, 100, 99} },
         };
-
         [Test]
         public void SelectPageNumberTests()
         {
