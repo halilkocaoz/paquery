@@ -26,14 +26,14 @@ namespace PaQuery.Models
         public static int? NextPageNumber(int totalPageCount, int currentPage)
         {
             if (totalPageCount < 1 || currentPage >= totalPageCount) return null;
-            else if (currentPage < 1) return totalPageCount > 1 ? 2 : 1;
+            else if (currentPage < 1 && totalPageCount > 1) return 2;
 
             return currentPage + 1;
         }
 
         public static int? SelectPageNumber(PageType pageType, int totalPageCount, int currentPage) =>
-             PageType.Previous == pageType 
-             ? PreviousPageNumber(totalPageCount, currentPage) 
+             PageType.Previous == pageType
+             ? PreviousPageNumber(totalPageCount, currentPage)
              : NextPageNumber(totalPageCount, currentPage);
     }
 }
