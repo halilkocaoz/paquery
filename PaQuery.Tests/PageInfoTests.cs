@@ -49,7 +49,7 @@ namespace PaQuery.Tests
             new SubTest { Name = "C. RETURN NULL: totalPage > 1, currentPage = -1", Expected = null, Values = new int[] {100, -1} },
             new SubTest { Name = "D. RETURN NULL: totalPage < 1, currentPage = unimportant", Expected = null, Values = new int[] {0, 2} },
 
-            new SubTest { Name = "E. RETURN DEFAULT VALUE (LAST PAGE NUMBER): currentPage > totalPage", Expected = 100, Values = new int[]{100, 101} },
+            new SubTest { Name = "E. RETURN DEFAULT VALUE (LAST PAGE NUMBER - 1): currentPage > totalPage", Expected = 99, Values = new int[]{100, 101} },
 
             new SubTest { Name = "F. currentPage - 1", Expected = 99, Values = new int[]{100, 100} },
             new SubTest { Name = "G. currentPage - 1", Expected = 49, Values = new int[]{100, 50} },
@@ -69,13 +69,15 @@ namespace PaQuery.Tests
         {
             new SubTest { Name = "A. RETURN NULL: totalPage > 1, currentPage >= totalPage", Expected = null, Values = new int[] {100, 100} },
             new SubTest { Name = "B. RETURN NULL: totalPage > 1, currentPage >= totalPage", Expected = null, Values = new int[] {100, 101} },
-            new SubTest { Name = "C. RETURN NULL: totalPage < 1, currentPage = unimportant", Expected = null, Values = new int[] {0, 1} },
+            new SubTest { Name = "C. RETURN NULL: totalPage < 1, currentPage = unimportant", Expected = null, Values = new int[] {1, -1} },
+            new SubTest { Name = "D. RETURN NULL: totalPage < 1, currentPage = unimportant", Expected = null, Values = new int[] {0, -1} },
+            new SubTest { Name = "E. RETURN NULL: totalPage < 1, currentPage = unimportant", Expected = null, Values = new int[] {-1, -1} },
 
-            new SubTest { Name = "D. RETURN DEFAULT VALUE (2): totalPage > 1, currentPage < 1", Expected = 2, Values = new int[]{2, 0} },
+            new SubTest { Name = "F. RETURN DEFAULT VALUE (2): totalPage > 1, currentPage < 1", Expected = 2, Values = new int[]{2, 0} },
 
-            new SubTest { Name = "F. currentPage + 1", Expected = 2, Values = new int[]{100, 1} },
-            new SubTest { Name = "G. currentPage + 1", Expected = 16, Values = new int[]{100, 15} },
-            new SubTest { Name = "H. currentPage + 1", Expected = 100, Values = new int[]{100, 99} },
+            new SubTest { Name = "G. currentPage + 1", Expected = 2, Values = new int[]{100, 1} },
+            new SubTest { Name = "H. currentPage + 1", Expected = 16, Values = new int[]{100, 15} },
+            new SubTest { Name = "I. currentPage + 1", Expected = 100, Values = new int[]{100, 99} },
         };
         [Test]
         public void NextPageNumberTests()
