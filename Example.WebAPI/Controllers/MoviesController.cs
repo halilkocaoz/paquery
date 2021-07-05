@@ -54,7 +54,15 @@ namespace Example.WebAPI.Controllers
             // *
             var pageInfo = Request.Query.GetPageInfo(hostPath: $"https://{Request.Host}{Request.Path}", totalPageCount, currentPage: page);
 
-            return Ok(new { pagination = new { pageInfo.Next, pageInfo.Previous, current = page, total = totalPageCount }, data = movies });
+            var pagination = new
+            {
+                pageInfo.Next,
+                pageInfo.Previous,
+                current = page,
+                total = totalPageCount
+            };
+
+            return Ok(new { pagination, movies });
         }
     }
 }
