@@ -29,13 +29,13 @@ namespace PaQuery.Tests
         public void NextIs11_PrevIs9(int totalPageCount, int selectedPage, string queryString)
         {
             httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
-            var pageInfo = httpContext.Request.Query.GetPageInfo(hostPath, totalPageCount, selectedPage);
+            var pagination = httpContext.Request.Query.PaginationUrls(hostPath, totalPageCount, selectedPage);
 
             nextPageExpected = $"{startingOfExpected}{selectedPage + 1}";
             previousPageExpected = $"{startingOfExpected}{selectedPage - 1}";
 
-            Assert.AreEqual(nextPageExpected, pageInfo.Next);
-            Assert.AreEqual(previousPageExpected, pageInfo.Previous);
+            Assert.AreEqual(nextPageExpected, pagination.Next);
+            Assert.AreEqual(previousPageExpected, pagination.Previous);
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace PaQuery.Tests
         public void NextIs11_PrevIs9_2(int totalPageCount, int selectedPage, string queryString)
         {
             httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
-            var pageInfo = httpContext.Request.Query.GetPageInfo(hostPath, totalPageCount, selectedPage);
+            var pageInfo = httpContext.Request.Query.PaginationUrls(hostPath, totalPageCount, selectedPage);
 
             nextPageExpected = $"{hostPath}{queryString}={selectedPage + 1}";
             previousPageExpected = $"{hostPath}{queryString}={selectedPage - 1}";
@@ -58,13 +58,13 @@ namespace PaQuery.Tests
         {
             httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pageInfo = httpContext.Request.Query.GetPageInfo(hostPath, totalPageCount, selectedPage);
+            var pagination = httpContext.Request.Query.PaginationUrls(hostPath, totalPageCount, selectedPage);
 
             nextPageExpected = $"{startingOfExpected}2";
             previousPageExpected = null;
 
-            Assert.AreEqual(nextPageExpected, pageInfo.Next);
-            Assert.AreEqual(previousPageExpected, pageInfo.Previous);
+            Assert.AreEqual(nextPageExpected, pagination.Next);
+            Assert.AreEqual(previousPageExpected, pagination.Previous);
         }
 
         [Test]
@@ -73,13 +73,13 @@ namespace PaQuery.Tests
         {
             httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pageInfo = httpContext.Request.Query.GetPageInfo(hostPath, totalPageCount, selectedPage);
+            var pagination = httpContext.Request.Query.PaginationUrls(hostPath, totalPageCount, selectedPage);
 
             nextPageExpected = $"{startingOfExpected}2";
             previousPageExpected = null;
 
-            Assert.AreEqual(nextPageExpected, pageInfo.Next);
-            Assert.AreEqual(previousPageExpected, pageInfo.Previous);
+            Assert.AreEqual(nextPageExpected, pagination.Next);
+            Assert.AreEqual(previousPageExpected, pagination.Previous);
         }
 
         [Test]
@@ -88,13 +88,13 @@ namespace PaQuery.Tests
         {
             httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pageInfo = httpContext.Request.Query.GetPageInfo(hostPath, totalPageCount, selectedPage);
+            var pagination = httpContext.Request.Query.PaginationUrls(hostPath, totalPageCount, selectedPage);
 
             nextPageExpected = $"{startingOfExpected}2";
             previousPageExpected = null;
 
-            Assert.AreEqual(nextPageExpected, pageInfo.Next);
-            Assert.AreEqual(previousPageExpected, pageInfo.Previous);
+            Assert.AreEqual(nextPageExpected, pagination.Next);
+            Assert.AreEqual(previousPageExpected, pagination.Previous);
         }
 
         [Test]
@@ -103,13 +103,13 @@ namespace PaQuery.Tests
         {
             httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pageInfo = httpContext.Request.Query.GetPageInfo(hostPath, totalPageCount, selectedPage);
+            var pagination = httpContext.Request.Query.PaginationUrls(hostPath, totalPageCount, selectedPage);
 
             nextPageExpected = null;
             previousPageExpected = $"{startingOfExpected}99";
 
-            Assert.AreEqual(nextPageExpected, pageInfo.Next);
-            Assert.AreEqual(previousPageExpected, pageInfo.Previous);
+            Assert.AreEqual(nextPageExpected, pagination.Next);
+            Assert.AreEqual(previousPageExpected, pagination.Previous);
         }
 
         [Test]
@@ -118,13 +118,13 @@ namespace PaQuery.Tests
         {
             httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pageInfo = httpContext.Request.Query.GetPageInfo(hostPath, totalPageCount, selectedPage);
+            var pagination = httpContext.Request.Query.PaginationUrls(hostPath, totalPageCount, selectedPage);
 
             nextPageExpected = null;
             previousPageExpected = $"{startingOfExpected}99";
 
-            Assert.AreEqual(nextPageExpected, pageInfo.Next);
-            Assert.AreEqual(previousPageExpected, pageInfo.Previous);
+            Assert.AreEqual(nextPageExpected, pagination.Next);
+            Assert.AreEqual(previousPageExpected, pagination.Previous);
         }
     }
 }

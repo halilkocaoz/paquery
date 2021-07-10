@@ -11,7 +11,7 @@ namespace PaQuery.Tests
         [Test]
         public void SetUrlsTests()
         {
-            var pageInfo = new PageInfo();
+            var pageInfo = new PaginationUrl();
             const string hostPath = "api.testdomain.com", pageQueryKey = "page";
             string queryString;
             const int selectedPageNumber = 5;
@@ -60,7 +60,7 @@ namespace PaQuery.Tests
         {
             foreach (var test in previousPageNumberSubTests)
             {
-                var got = PageInfo.PreviousPageNumber(totalPageCount: test.Values[0], currentPage: test.Values[1]);
+                var got = PaginationUrl.PreviousPageNumber(totalPageCount: test.Values[0], currentPage: test.Values[1]);
                 Assert.AreEqual(test.Expected, got, $"Test name: {test.Name}");
             }
         }
@@ -84,7 +84,7 @@ namespace PaQuery.Tests
         {
             foreach (var test in nextPageNumberSubTests)
             {
-                var got = PageInfo.NextPageNumber(totalPageCount: test.Values[0], currentPage: test.Values[1]);
+                var got = PaginationUrl.NextPageNumber(totalPageCount: test.Values[0], currentPage: test.Values[1]);
                 Assert.AreEqual(test.Expected, got, $"Test name: {test.Name}");
             }
         }
@@ -99,7 +99,7 @@ namespace PaQuery.Tests
         {
             foreach (var test in selectPageNumberSubTests)
             {
-                var got = PageInfo.SelectPageNumber(pageType: (PageType)test.Values[0], totalPageCount: test.Values[1], currentPage: test.Values[2]);
+                var got = PaginationUrl.SelectPageNumber(pageType: (PageType)test.Values[0], totalPageCount: test.Values[1], currentPage: test.Values[2]);
                 Assert.AreEqual(test.Expected, got, $"Test name: {test.Name}");
             }
         }

@@ -6,7 +6,7 @@ using PaQuery;
 namespace Example.WebAPI.Controllers
 {
     [ApiController]
-    [Route("/api/[controller]")]
+    [Route("[controller]")]
     public class MoviesController : ControllerBase
     {
         public class Movie
@@ -52,12 +52,12 @@ namespace Example.WebAPI.Controllers
             #endregion
 
             // *
-            var pageInfo = Request.Query.GetPageInfo(hostPath: $"https://{Request.Host}{Request.Path}", totalPageCount, currentPage: page);
+            var paginationUrl = Request.Query.PaginationUrls(hostPath: $"https://{Request.Host}{Request.Path}", totalPageCount, currentPage: page);
 
             var pagination = new
             {
-                pageInfo.Next,
-                pageInfo.Previous,
+                paginationUrl.Next,
+                paginationUrl.Previous,
                 current = page,
                 total = totalPageCount
             };

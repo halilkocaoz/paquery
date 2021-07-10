@@ -24,19 +24,19 @@ namespace PaQuery//.Extensions
             return $"?{queryString.Remove(queryString.Length - 1, 1)}".Replace(" ", "%20");
         }
 
-        public static PageInfo GetPageInfo(
+        public static PaginationUrl PaginationUrls(
             this IQueryCollection queryCollection,
             string hostPath,
             int totalPageCount,
             int currentPage,
             string pageQueryKey = "page")
         {
-            var pagination = new PageInfo();
+            var pagination = new PaginationUrl();
             string queryString = queryCollection.ToStringQueriesWithoutPageQueryKey(pageQueryKey);
 
             for (sbyte i = (sbyte)PageType.Previous; i <= (sbyte)PageType.Next; i += 2)
             {
-                int? pageNumber = PageInfo.SelectPageNumber((PageType)i, totalPageCount, currentPage);
+                int? pageNumber = PaginationUrl.SelectPageNumber((PageType)i, totalPageCount, currentPage);
                 if (pageNumber == null)
                     continue;
 

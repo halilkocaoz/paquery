@@ -2,7 +2,7 @@ using PaQuery.Enums;
 
 namespace PaQuery.Models
 {
-    public class PageInfo
+    public class PaginationUrl
     {
         public string Next { get; private set; }
         public string Previous { get; private set; }
