@@ -42,14 +42,14 @@ namespace PaQuery.Tests
             public int? Expected;
         };
 
-        List<SubTest> previousPageNumberSubTests = new List<SubTest>
+        private readonly List<SubTest> previousPageNumberSubTests = new List<SubTest>
         {
             new SubTest { Name = "A. RETURN NULL: totalPage > 1, currentPage = 1", Expected = null, Values = new int[] {100, 1} },
             new SubTest { Name = "B. RETURN NULL: totalPage > 1, currentPage = 0", Expected = null, Values = new int[] {100, 0} },
             new SubTest { Name = "C. RETURN NULL: totalPage > 1, currentPage = -1", Expected = null, Values = new int[] {100, -1} },
             new SubTest { Name = "D. RETURN NULL: totalPage < 1, currentPage = unimportant", Expected = null, Values = new int[] {0, 2} },
 
-            new SubTest { Name = "E. RETURN DEFAULT VALUE (LAST PAGE NUMBER - 1): currentPage > totalPage", Expected = 99, Values = new int[]{100, 101} },
+            new SubTest { Name = "E. RETURN DEFAULT VALUE (LAST PAGE NUMBER): currentPage > totalPage", Expected = 100, Values = new int[]{100, 101} },
 
             new SubTest { Name = "F. currentPage - 1", Expected = 99, Values = new int[]{100, 100} },
             new SubTest { Name = "G. currentPage - 1", Expected = 49, Values = new int[]{100, 50} },
@@ -65,7 +65,7 @@ namespace PaQuery.Tests
             }
         }
 
-        List<SubTest> nextPageNumberSubTests = new List<SubTest>
+        private readonly List<SubTest> nextPageNumberSubTests = new List<SubTest>
         {
             new SubTest { Name = "A. RETURN NULL: totalPage > 1, currentPage >= totalPage", Expected = null, Values = new int[] {100, 100} },
             new SubTest { Name = "B. RETURN NULL: totalPage > 1, currentPage >= totalPage", Expected = null, Values = new int[] {100, 101} },
@@ -89,7 +89,7 @@ namespace PaQuery.Tests
             }
         }
 
-        List<SubTest> selectPageNumberSubTests = new List<SubTest>
+        private readonly List<SubTest> selectPageNumberSubTests = new List<SubTest>
         {
             new SubTest { Name = "A. Previous", Expected = 99, Values = new int[]{(int)PageType.Previous, 100, 100} },
             new SubTest { Name = "B. Next", Expected = 100, Values = new int[]{(int)PageType.Next, 100, 99} },

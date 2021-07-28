@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using PaQuery;
+using PaQuery.Extensions;
+
 namespace Example.WebAPI.Controllers
 {
     [ApiController]
@@ -35,15 +36,20 @@ namespace Example.WebAPI.Controllers
         [HttpGet]
         public IActionResult GetMovies(string title, string director, [Range(1, int.MaxValue)] int page = 1)
         {
+            int totalPageCount = 0;
+
             #region basic filter
+            IQueryable<Movie> queryableMovies = movies.AsQueryable();
+
             if (!string.IsNullOrEmpty(title))
-                movies = movies.Where(x => x.Title.ToLower().Contains(title)).ToList();
+                queryableMovies = queryableMovies.Where(x => x.Title.ToLower().Contains(title));
             if (!string.IsNullOrEmpty(director))
-                movies = movies.Where(x => x.Director.ToLower().Contains(director)).ToList();
+                queryableMovies = queryableMovies.Where(x => x.Director.ToLower().Contains(director));
+
+            movies = queryableMovies.ToList();
             #endregion
 
             #region basic pagination
-            var totalPageCount = 1;
             if (movies.Count > moviePerPage)
             {
                 totalPageCount = movies.Count % moviePerPage != 0 ? movies.Count / moviePerPage + 1 : movies.Count / moviePerPage;
@@ -51,8 +57,8 @@ namespace Example.WebAPI.Controllers
             }
             #endregion
 
-            // *
-            var paginationUrl = Request.Query.PaginationUrls(hostPath: $"https://{Request.Host}{Request.Path}", totalPageCount, currentPage: page);
+            // * Example
+            var paginationUrl = Request.CreatePaginationUrl(totalPageCount: totalPageCount, currentPage: page);
 
             var pagination = new
             {
@@ -61,7 +67,7 @@ namespace Example.WebAPI.Controllers
                 current = page,
                 total = totalPageCount
             };
-
+            
             return Ok(new { pagination, movies });
         }
     }

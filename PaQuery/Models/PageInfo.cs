@@ -14,23 +14,39 @@ namespace PaQuery.Models
                 : $"{hostPath}?{pageQueryKey}={selectedPageNumber}";
 
             if (pageType == PageType.Previous)
+            {
                 this.Previous = url;
+            }
             else
+            {
                 this.Next = url;
+            }
         }
 
         public static int? PreviousPageNumber(int totalPageCount, int currentPage)
         {
-            if (totalPageCount < 1 || currentPage <= 1) return null;
-            else if (currentPage > totalPageCount) return totalPageCount - 1;
+            if (totalPageCount < 1 || currentPage <= 1)
+            {
+                return null;
+            }
+            else if (currentPage > totalPageCount)
+            {
+                return totalPageCount;
+            }
 
             return currentPage - 1;
         }
 
         public static int? NextPageNumber(int totalPageCount, int currentPage)
         {
-            if (totalPageCount <= 1 || currentPage >= totalPageCount) return null;
-            else if (currentPage < 1 && totalPageCount > 1) return 2;
+            if (totalPageCount <= 1 || currentPage >= totalPageCount)
+            {
+                return null;
+            }
+            else if (currentPage < 1 && totalPageCount > 1)
+            {
+                return 2;
+            }
 
             return currentPage + 1;
         }

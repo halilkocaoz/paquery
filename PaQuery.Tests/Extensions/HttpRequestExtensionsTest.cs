@@ -1,18 +1,19 @@
-using System;
 using Microsoft.AspNetCore.Http;
 using NUnit.Framework;
+using PaQuery.Extensions;
 
 namespace PaQuery.Tests
 {
-    public class QueryCollectionExtensionsTests
+    public class HttpRequestExtensionsTest
     {
-        private DefaultHttpContext httpContext = new DefaultHttpContext();
+        private readonly DefaultHttpContext httpContext = new DefaultHttpContext();
 
-        private const string startingOfQueryString = "?director=directorName&year=2020", pageQueryKey = "page";
+        private const string startingOfQueryString = "?director=directorName&year=2021", pageQueryKey = "page";
 
-        private string hostPath, nextPageExpected, previousPageExpected, startingOfExpected;
-
-        public QueryCollectionExtensionsTests()
+        private readonly string hostPath, startingOfExpected;
+        private string nextPageExpected, previousPageExpected;
+        
+        public HttpRequestExtensionsTest()
         {
             httpContext.Request.Host = new HostString("api.testdomain.com");
             httpContext.Request.Path = new PathString("/movies");
@@ -29,7 +30,7 @@ namespace PaQuery.Tests
         public void NextIs11_PrevIs9(int totalPageCount, int selectedPage, string queryString)
         {
             httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
-            var pagination = httpContext.Request.Query.PaginationUrls(hostPath, totalPageCount, selectedPage);
+            var pagination = httpContext.Request.CreatePaginationUrl(totalPageCount, selectedPage);
 
             nextPageExpected = $"{startingOfExpected}{selectedPage + 1}";
             previousPageExpected = $"{startingOfExpected}{selectedPage - 1}";
@@ -43,7 +44,7 @@ namespace PaQuery.Tests
         public void NextIs11_PrevIs9_2(int totalPageCount, int selectedPage, string queryString)
         {
             httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
-            var pageInfo = httpContext.Request.Query.PaginationUrls(hostPath, totalPageCount, selectedPage);
+            var pageInfo = httpContext.Request.CreatePaginationUrl(totalPageCount, selectedPage);
 
             nextPageExpected = $"{hostPath}{queryString}={selectedPage + 1}";
             previousPageExpected = $"{hostPath}{queryString}={selectedPage - 1}";
@@ -58,7 +59,7 @@ namespace PaQuery.Tests
         {
             httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pagination = httpContext.Request.Query.PaginationUrls(hostPath, totalPageCount, selectedPage);
+            var pagination = httpContext.Request.CreatePaginationUrl(totalPageCount, selectedPage);
 
             nextPageExpected = $"{startingOfExpected}2";
             previousPageExpected = null;
@@ -73,7 +74,7 @@ namespace PaQuery.Tests
         {
             httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pagination = httpContext.Request.Query.PaginationUrls(hostPath, totalPageCount, selectedPage);
+            var pagination = httpContext.Request.CreatePaginationUrl(totalPageCount, selectedPage);
 
             nextPageExpected = $"{startingOfExpected}2";
             previousPageExpected = null;
@@ -88,7 +89,7 @@ namespace PaQuery.Tests
         {
             httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pagination = httpContext.Request.Query.PaginationUrls(hostPath, totalPageCount, selectedPage);
+            var pagination = httpContext.Request.CreatePaginationUrl(totalPageCount, selectedPage);
 
             nextPageExpected = $"{startingOfExpected}2";
             previousPageExpected = null;
@@ -103,7 +104,7 @@ namespace PaQuery.Tests
         {
             httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pagination = httpContext.Request.Query.PaginationUrls(hostPath, totalPageCount, selectedPage);
+            var pagination = httpContext.Request.CreatePaginationUrl(totalPageCount, selectedPage);
 
             nextPageExpected = null;
             previousPageExpected = $"{startingOfExpected}99";
@@ -114,14 +115,14 @@ namespace PaQuery.Tests
 
         [Test]
         [TestCase(100, 101, startingOfQueryString + "&" + pageQueryKey)]
-        public void NextIsNull_PrevIs99_2(int totalPageCount, int selectedPage, string queryString)
+        public void NextIsNull_PrevIs100(int totalPageCount, int selectedPage, string queryString)
         {
             httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pagination = httpContext.Request.Query.PaginationUrls(hostPath, totalPageCount, selectedPage);
+            var pagination = httpContext.Request.CreatePaginationUrl(totalPageCount, selectedPage);
 
             nextPageExpected = null;
-            previousPageExpected = $"{startingOfExpected}99";
+            previousPageExpected = $"{startingOfExpected}100";
 
             Assert.AreEqual(nextPageExpected, pagination.Next);
             Assert.AreEqual(previousPageExpected, pagination.Previous);
