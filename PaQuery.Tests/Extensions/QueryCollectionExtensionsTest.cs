@@ -13,7 +13,6 @@ namespace PaQuery.Tests
         {
             httpContext.Request.Host = new HostString("api.testdomain.com");
             httpContext.Request.Path = new PathString("/movies");
-            httpContext.Request.IsHttps = true;
         }
 
         [Test]

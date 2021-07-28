@@ -5,9 +5,8 @@ using System.Collections.Generic;
 
 namespace PaQuery.Tests
 {
-    public class PageInfoTests
+    public class PaginationUrlTests
     {
-
         [Test]
         public void SetUrlsTests()
         {
@@ -35,7 +34,7 @@ namespace PaQuery.Tests
             #endregion
         }
 
-        struct SubTest
+        private struct SubTest
         {
             public string Name;
             public int[] Values;
