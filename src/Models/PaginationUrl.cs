@@ -7,7 +7,7 @@ namespace PaQuery.Models
         public string Next { get; private set; }
         public string Previous { get; private set; }
 
-        public void SetUrls(PageType pageType, string queryString, string pageQueryKey, string hostPath, int selectedPageNumber)
+        public void SetUrls(string hostPath, string queryString, string pageQueryKey, PageType pageType, int selectedPageNumber)
         {
             var url = string.IsNullOrEmpty(queryString) is false
                 ? $"{hostPath}{queryString}&{pageQueryKey}={selectedPageNumber}"

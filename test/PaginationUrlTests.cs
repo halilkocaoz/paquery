@@ -17,19 +17,19 @@ namespace PaQuery.Tests
 
             #region type1
             queryString = "?parameter=Value";
-            pageInfo.SetUrls(PageType.Next, queryString, pageQueryKey, hostPath, selectedPageNumber);
+            pageInfo.SetUrls(hostPath, queryString, pageQueryKey, PageType.Next, selectedPageNumber);
             Assert.AreEqual($"{hostPath}{queryString}&{pageQueryKey}={selectedPageNumber}", pageInfo.Next);
             #endregion
 
             #region type2
             queryString = null;
-            pageInfo.SetUrls(PageType.Next, queryString, pageQueryKey, hostPath, selectedPageNumber);
+            pageInfo.SetUrls(hostPath, queryString, pageQueryKey, PageType.Next, selectedPageNumber);
             Assert.AreEqual($"{hostPath}?{pageQueryKey}={selectedPageNumber}", pageInfo.Next);
             #endregion
 
             #region type3
             queryString = string.Empty;
-            pageInfo.SetUrls(PageType.Next, queryString, pageQueryKey, hostPath, selectedPageNumber);
+            pageInfo.SetUrls(hostPath, queryString, pageQueryKey, PageType.Next, selectedPageNumber);
             Assert.AreEqual($"{hostPath}?{pageQueryKey}={selectedPageNumber}", pageInfo.Next);
             #endregion
         }

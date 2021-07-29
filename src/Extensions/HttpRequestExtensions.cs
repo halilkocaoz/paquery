@@ -13,17 +13,17 @@ namespace PaQuery.Extensions
         {
             var pagination = new PaginationUrl();
             string queryString = request.Query.ToStringQueriesWithoutPageQueryKey(pageQueryKey);
-            string hostPath = request.IsHttps ? $"https://{request.Host}{request.Path}" : $"https://{request.Host}{request.Path}";
+            string hostPath = request.IsHttps ? $"https://{request.Host}{request.Path}" : $"http://{request.Host}{request.Path}";
 
-            for (PageType i = PageType.Previous; i <= PageType.Next; i += 2)
+            for (PageType pageType = PageType.Previous; pageType <= PageType.Next; pageType += 2)
             {
-                int? pageNumber = Models.PaginationUrl.SelectPageNumber(i, totalPageCount, currentPage);
+                int? pageNumber = PaginationUrl.SelectPageNumber(pageType, totalPageCount, currentPage);
                 if (pageNumber == null)
                 {
                     continue;
                 }
 
-                pagination.SetUrls(i, queryString, pageQueryKey, hostPath, (int)pageNumber);
+                pagination.SetUrls(hostPath, queryString, pageQueryKey, pageType, (int)pageNumber);
             }
             return pagination;
         }
