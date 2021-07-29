@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
-    <ProjectReference Include="..\PaQuery\PaQuery.csproj" />
+    <ProjectReference Include="..\src\PaQuery.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
