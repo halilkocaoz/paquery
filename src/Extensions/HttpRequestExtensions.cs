@@ -9,7 +9,7 @@ namespace PaQuery.Extensions
         public static Pagination CreatePagination(this HttpRequest request,
             int totalPageCount,
             int currentPage,
-            string pageQueryKey = "page")
+            string pageQueryKey)
         {
             var pagination = new Pagination(currentPage, totalPageCount);
             var queryString = request.Query.ToStringQueriesWithoutPageQueryKey(pageQueryKey);

@@ -59,7 +59,7 @@ public class MoviesController : ControllerBase
         #endregion
 
         // * Example
-        var pagination = Request.CreatePagination(totalPageCount: totalPageCount, currentPage: page);
+        var pagination = Request.CreatePagination(totalPageCount: totalPageCount, currentPage: page, pageQueryKey: "page");
         
         return Ok(new { pagination, movies = _movies });
     }

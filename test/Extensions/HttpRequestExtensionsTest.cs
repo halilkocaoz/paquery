@@ -30,7 +30,7 @@ public class HttpRequestExtensionsTest
     public void NextIs11_PrevIs9(int totalPageCount, int selectedPage, string queryString)
     {
         _httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
-        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage);
+        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage, PageQueryKey);
 
         _nextPageExpected = $"{_startingOfExpected}{selectedPage + 1}";
         _previousPageExpected = $"{_startingOfExpected}{selectedPage - 1}";
@@ -44,7 +44,7 @@ public class HttpRequestExtensionsTest
     public void NextIs11_PrevIs9_2(int totalPageCount, int selectedPage, string queryString)
     {
         _httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
-        var pageInfo = _httpContext.Request.CreatePagination(totalPageCount, selectedPage);
+        var pageInfo = _httpContext.Request.CreatePagination(totalPageCount, selectedPage, PageQueryKey);
 
         _nextPageExpected = $"{_hostPath}{queryString}={selectedPage + 1}";
         _previousPageExpected = $"{_hostPath}{queryString}={selectedPage - 1}";
@@ -59,7 +59,7 @@ public class HttpRequestExtensionsTest
     {
         _httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage);
+        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage, PageQueryKey);
 
         _nextPageExpected = $"{_startingOfExpected}2";
         _previousPageExpected = null;
@@ -74,7 +74,7 @@ public class HttpRequestExtensionsTest
     {
         _httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage);
+        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage, PageQueryKey);
 
         _nextPageExpected = $"{_startingOfExpected}2";
         _previousPageExpected = null;
@@ -89,7 +89,7 @@ public class HttpRequestExtensionsTest
     {
         _httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage);
+        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage, PageQueryKey);
 
         _nextPageExpected = $"{_startingOfExpected}2";
         _previousPageExpected = null;
@@ -104,7 +104,7 @@ public class HttpRequestExtensionsTest
     {
         _httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage);
+        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage, PageQueryKey);
 
         _nextPageExpected = null;
         _previousPageExpected = $"{_startingOfExpected}99";
@@ -119,7 +119,7 @@ public class HttpRequestExtensionsTest
     {
         _httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage);
+        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage, PageQueryKey);
 
         _nextPageExpected = null;
         _previousPageExpected = $"{_startingOfExpected}100";
