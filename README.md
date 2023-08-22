@@ -8,17 +8,9 @@ Simple extension for your API to make requested(IQueryCollection) query string(p
 
 ```csharp
 // * Example
-var paginationUrl = Request.CreatePaginationUrl(totalPageCount: totalPageCount, currentPage: page);
-
-var pagination = new
-{
-    paginationUrl.Next,
-    paginationUrl.Previous,
-    ..
-    ...
-};
-
-return Ok(new { pagination, movies });
+var pagination = Request.CreatePagination(totalPageCount: totalPageCount, currentPage: page);
+        
+return Ok(new { pagination, movies = _movies });
 ```
 
 Look at [MoviesController.cs](https://github.com/halilkocaoz/paquery/blob/main/Example.WebAPI/Controllers/MoviesController.cs) for example.
