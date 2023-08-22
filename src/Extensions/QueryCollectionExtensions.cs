@@ -17,14 +17,14 @@ namespace PaQuery.Extensions
                 return null;
             }
 
-            StringBuilder queryStringWithoutPageQueryKey = new StringBuilder();
+            var queryStringWithoutPageQueryKey = new StringBuilder();
             foreach (var query in queryArray)
             {
                 if (pageQueryKey == query.Key)
                 {
                     continue;
                 }
-                int queryValueCounter = 0;
+                var queryValueCounter = 0;
 
                 queryStringWithoutPageQueryKey.Append($"{query.Key}=");
                 foreach (var value in query.Value)

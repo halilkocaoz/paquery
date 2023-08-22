@@ -2,130 +2,129 @@ using Microsoft.AspNetCore.Http;
 using NUnit.Framework;
 using PaQuery.Extensions;
 
-namespace PaQuery.Tests
+namespace PaQuery.Tests.Extensions;
+
+public class HttpRequestExtensionsTest
 {
-    public class HttpRequestExtensionsTest
-    {
-        private readonly DefaultHttpContext httpContext = new DefaultHttpContext();
+    private readonly DefaultHttpContext _httpContext = new();
 
-        private const string startingOfQueryString = "?director=directorName&year=2021", pageQueryKey = "page";
+    private const string StartingOfQueryString = "?director=directorName&year=2021", PageQueryKey = "page";
 
-        private readonly string hostPath, startingOfExpected;
-        private string nextPageExpected, previousPageExpected;
+    private readonly string _hostPath, _startingOfExpected;
+    private string _nextPageExpected, _previousPageExpected;
         
-        public HttpRequestExtensionsTest()
-        {
-            httpContext.Request.Host = new HostString("api.testdomain.com");
-            httpContext.Request.Path = new PathString("/movies");
-            httpContext.Request.QueryString = new QueryString($"{startingOfQueryString}&{pageQueryKey}={1}");
-            httpContext.Request.IsHttps = true;
+    public HttpRequestExtensionsTest()
+    {
+        _httpContext.Request.Host = new HostString("api.testdomain.com");
+        _httpContext.Request.Path = new PathString("/movies");
+        _httpContext.Request.QueryString = new QueryString($"{StartingOfQueryString}&{PageQueryKey}={1}");
+        _httpContext.Request.IsHttps = true;
 
-            hostPath = httpContext.Request.IsHttps ? $"https://{httpContext.Request.Host}{httpContext.Request.Path}" : $"http://{httpContext.Request.Host}{httpContext.Request.Path}";
-            var stringQueryWithoutPageParameter = httpContext.Request.Query.ToStringQueriesWithoutPageQueryKey(pageQueryKey);
-            startingOfExpected = $"{hostPath}{stringQueryWithoutPageParameter}&{pageQueryKey}=";
-        }
+        _hostPath = _httpContext.Request.IsHttps ? $"https://{_httpContext.Request.Host}{_httpContext.Request.Path}" : $"http://{_httpContext.Request.Host}{_httpContext.Request.Path}";
+        var stringQueryWithoutPageParameter = _httpContext.Request.Query.ToStringQueriesWithoutPageQueryKey(PageQueryKey);
+        _startingOfExpected = $"{_hostPath}{stringQueryWithoutPageParameter}&{PageQueryKey}=";
+    }
 
-        [Test]
-        [TestCase(100, 10, startingOfQueryString + "&" + pageQueryKey)]
-        public void NextIs11_PrevIs9(int totalPageCount, int selectedPage, string queryString)
-        {
-            httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
-            var pagination = httpContext.Request.CreatePaginationUrl(totalPageCount, selectedPage);
+    [Test]
+    [TestCase(100, 10, StartingOfQueryString + "&" + PageQueryKey)]
+    public void NextIs11_PrevIs9(int totalPageCount, int selectedPage, string queryString)
+    {
+        _httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
+        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage);
 
-            nextPageExpected = $"{startingOfExpected}{selectedPage + 1}";
-            previousPageExpected = $"{startingOfExpected}{selectedPage - 1}";
+        _nextPageExpected = $"{_startingOfExpected}{selectedPage + 1}";
+        _previousPageExpected = $"{_startingOfExpected}{selectedPage - 1}";
 
-            Assert.AreEqual(nextPageExpected, pagination.Next);
-            Assert.AreEqual(previousPageExpected, pagination.Previous);
-        }
+        Assert.AreEqual(_nextPageExpected, pagination.Next);
+        Assert.AreEqual(_previousPageExpected, pagination.Previous);
+    }
 
-        [Test]
-        [TestCase(100, 10, "?" + pageQueryKey)]
-        public void NextIs11_PrevIs9_2(int totalPageCount, int selectedPage, string queryString)
-        {
-            httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
-            var pageInfo = httpContext.Request.CreatePaginationUrl(totalPageCount, selectedPage);
+    [Test]
+    [TestCase(100, 10, "?" + PageQueryKey)]
+    public void NextIs11_PrevIs9_2(int totalPageCount, int selectedPage, string queryString)
+    {
+        _httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
+        var pageInfo = _httpContext.Request.CreatePagination(totalPageCount, selectedPage);
 
-            nextPageExpected = $"{hostPath}{queryString}={selectedPage + 1}";
-            previousPageExpected = $"{hostPath}{queryString}={selectedPage - 1}";
+        _nextPageExpected = $"{_hostPath}{queryString}={selectedPage + 1}";
+        _previousPageExpected = $"{_hostPath}{queryString}={selectedPage - 1}";
 
-            Assert.AreEqual(nextPageExpected, pageInfo.Next);
-            Assert.AreEqual(previousPageExpected, pageInfo.Previous);
-        }
+        Assert.AreEqual(_nextPageExpected, pageInfo.Next);
+        Assert.AreEqual(_previousPageExpected, pageInfo.Previous);
+    }
 
-        [Test]
-        [TestCase(100, 1, startingOfQueryString + "&" + pageQueryKey)]
-        public void NextIs2_PrevIsNull(int totalPageCount, int selectedPage, string queryString)
-        {
-            httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
+    [Test]
+    [TestCase(100, 1, StartingOfQueryString + "&" + PageQueryKey)]
+    public void NextIs2_PrevIsNull(int totalPageCount, int selectedPage, string queryString)
+    {
+        _httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pagination = httpContext.Request.CreatePaginationUrl(totalPageCount, selectedPage);
+        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage);
 
-            nextPageExpected = $"{startingOfExpected}2";
-            previousPageExpected = null;
+        _nextPageExpected = $"{_startingOfExpected}2";
+        _previousPageExpected = null;
 
-            Assert.AreEqual(nextPageExpected, pagination.Next);
-            Assert.AreEqual(previousPageExpected, pagination.Previous);
-        }
+        Assert.AreEqual(_nextPageExpected, pagination.Next);
+        Assert.AreEqual(_previousPageExpected, pagination.Previous);
+    }
 
-        [Test]
-        [TestCase(100, 0, startingOfQueryString + "&" + pageQueryKey)]
-        public void NextIs2_PrevIsNull_2(int totalPageCount, int selectedPage, string queryString)
-        {
-            httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
+    [Test]
+    [TestCase(100, 0, StartingOfQueryString + "&" + PageQueryKey)]
+    public void NextIs2_PrevIsNull_2(int totalPageCount, int selectedPage, string queryString)
+    {
+        _httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pagination = httpContext.Request.CreatePaginationUrl(totalPageCount, selectedPage);
+        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage);
 
-            nextPageExpected = $"{startingOfExpected}2";
-            previousPageExpected = null;
+        _nextPageExpected = $"{_startingOfExpected}2";
+        _previousPageExpected = null;
 
-            Assert.AreEqual(nextPageExpected, pagination.Next);
-            Assert.AreEqual(previousPageExpected, pagination.Previous);
-        }
+        Assert.AreEqual(_nextPageExpected, pagination.Next);
+        Assert.AreEqual(_previousPageExpected, pagination.Previous);
+    }
 
-        [Test]
-        [TestCase(100, -1, startingOfQueryString + "&" + pageQueryKey)]
-        public void NextIs2_PrevIsNull_3(int totalPageCount, int selectedPage, string queryString)
-        {
-            httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
+    [Test]
+    [TestCase(100, -1, StartingOfQueryString + "&" + PageQueryKey)]
+    public void NextIs2_PrevIsNull_3(int totalPageCount, int selectedPage, string queryString)
+    {
+        _httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pagination = httpContext.Request.CreatePaginationUrl(totalPageCount, selectedPage);
+        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage);
 
-            nextPageExpected = $"{startingOfExpected}2";
-            previousPageExpected = null;
+        _nextPageExpected = $"{_startingOfExpected}2";
+        _previousPageExpected = null;
 
-            Assert.AreEqual(nextPageExpected, pagination.Next);
-            Assert.AreEqual(previousPageExpected, pagination.Previous);
-        }
+        Assert.AreEqual(_nextPageExpected, pagination.Next);
+        Assert.AreEqual(_previousPageExpected, pagination.Previous);
+    }
 
-        [Test]
-        [TestCase(100, 100, startingOfQueryString + "&" + pageQueryKey)]
-        public void NextIsNull_PrevIs99(int totalPageCount, int selectedPage, string queryString)
-        {
-            httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
+    [Test]
+    [TestCase(100, 100, StartingOfQueryString + "&" + PageQueryKey)]
+    public void NextIsNull_PrevIs99(int totalPageCount, int selectedPage, string queryString)
+    {
+        _httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pagination = httpContext.Request.CreatePaginationUrl(totalPageCount, selectedPage);
+        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage);
 
-            nextPageExpected = null;
-            previousPageExpected = $"{startingOfExpected}99";
+        _nextPageExpected = null;
+        _previousPageExpected = $"{_startingOfExpected}99";
 
-            Assert.AreEqual(nextPageExpected, pagination.Next);
-            Assert.AreEqual(previousPageExpected, pagination.Previous);
-        }
+        Assert.AreEqual(_nextPageExpected, pagination.Next);
+        Assert.AreEqual(_previousPageExpected, pagination.Previous);
+    }
 
-        [Test]
-        [TestCase(100, 101, startingOfQueryString + "&" + pageQueryKey)]
-        public void NextIsNull_PrevIs100(int totalPageCount, int selectedPage, string queryString)
-        {
-            httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
+    [Test]
+    [TestCase(100, 101, StartingOfQueryString + "&" + PageQueryKey)]
+    public void NextIsNull_PrevIs100(int totalPageCount, int selectedPage, string queryString)
+    {
+        _httpContext.Request.QueryString = new QueryString($"{queryString}={selectedPage}");
 
-            var pagination = httpContext.Request.CreatePaginationUrl(totalPageCount, selectedPage);
+        var pagination = _httpContext.Request.CreatePagination(totalPageCount, selectedPage);
 
-            nextPageExpected = null;
-            previousPageExpected = $"{startingOfExpected}100";
+        _nextPageExpected = null;
+        _previousPageExpected = $"{_startingOfExpected}100";
 
-            Assert.AreEqual(nextPageExpected, pagination.Next);
-            Assert.AreEqual(previousPageExpected, pagination.Previous);
-        }
+        Assert.AreEqual(_nextPageExpected, pagination.Next);
+        Assert.AreEqual(_previousPageExpected, pagination.Previous);
     }
 }

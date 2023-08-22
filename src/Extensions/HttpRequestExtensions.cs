@@ -6,25 +6,28 @@ namespace PaQuery.Extensions
 {
     public static class HttpRequestExtensions
     {
-        public static PaginationUrl CreatePaginationUrl(this HttpRequest request,
-                                                        int totalPageCount,
-                                                        int currentPage,
-                                                        string pageQueryKey = "page")
+        public static Pagination CreatePagination(this HttpRequest request,
+            int totalPageCount,
+            int currentPage,
+            string pageQueryKey = "page")
         {
-            var pagination = new PaginationUrl();
-            string queryString = request.Query.ToStringQueriesWithoutPageQueryKey(pageQueryKey);
-            string hostPath = request.IsHttps ? $"https://{request.Host}{request.Path}" : $"http://{request.Host}{request.Path}";
+            var pagination = new Pagination(currentPage, totalPageCount);
+            var queryString = request.Query.ToStringQueriesWithoutPageQueryKey(pageQueryKey);
+            var hostPath = request.IsHttps
+                ? $"https://{request.Host}{request.Path}"
+                : $"http://{request.Host}{request.Path}";
 
-            for (PageType pageType = PageType.Previous; pageType <= PageType.Next; pageType += 2)
+            for (var pageType = PageType.Previous; pageType <= PageType.Next; pageType += 2)
             {
-                int? pageNumber = PaginationUrl.SelectPageNumber(pageType, totalPageCount, currentPage);
+                var pageNumber = Pagination.SelectPageNumber(pageType, totalPageCount, currentPage);
                 if (pageNumber == null)
                 {
                     continue;
                 }
 
-                pagination.SetUrls(hostPath, queryString, pageQueryKey, pageType, (int)pageNumber);
+                pagination.SetUrls(hostPath, queryString, pageQueryKey, pageType, (int) pageNumber);
             }
+
             return pagination;
         }
     }

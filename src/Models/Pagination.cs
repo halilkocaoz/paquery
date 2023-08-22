@@ -2,8 +2,20 @@ using PaQuery.Enums;
 
 namespace PaQuery.Models
 {
-    public class PaginationUrl
+    public class Pagination
     {
+        public Pagination()
+        {
+            
+        }
+        public Pagination(int currentPage, int totalPages)
+        {
+            CurrentPage = currentPage;
+            TotalPages = totalPages;
+        }
+
+        public int CurrentPage { get; }
+        public int TotalPages { get; }
         public string Next { get; private set; }
         public string Previous { get; private set; }
 
@@ -29,7 +41,8 @@ namespace PaQuery.Models
             {
                 return null;
             }
-            else if (currentPage > totalPageCount)
+
+            if (currentPage > totalPageCount)
             {
                 return totalPageCount;
             }
@@ -43,7 +56,8 @@ namespace PaQuery.Models
             {
                 return null;
             }
-            else if (currentPage < 1 && totalPageCount > 1)
+
+            if (currentPage < 1)
             {
                 return 2;
             }
