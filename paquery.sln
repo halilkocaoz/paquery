@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.WebAPI", "Example.WebAPI\Example.WebAPI.csproj", "{0E33CC56-CEB1-4222-8165-642420066E70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaQuery.Tests", "test\PaQuery.Tests.csproj", "{625B5CC0-B6BB-4C9E-BF23-EC36A9E6492E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaQuery", "src\PaQuery.csproj", "{F76BB386-1365-4A69-9993-9B42692E0352}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E33CC56-CEB1-4222-8165-642420066E70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E33CC56-CEB1-4222-8165-642420066E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E33CC56-CEB1-4222-8165-642420066E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E33CC56-CEB1-4222-8165-642420066E70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{625B5CC0-B6BB-4C9E-BF23-EC36A9E6492E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{625B5CC0-B6BB-4C9E-BF23-EC36A9E6492E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{625B5CC0-B6BB-4C9E-BF23-EC36A9E6492E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{625B5CC0-B6BB-4C9E-BF23-EC36A9E6492E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F76BB386-1365-4A69-9993-9B42692E0352}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F76BB386-1365-4A69-9993-9B42692E0352}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F76BB386-1365-4A69-9993-9B42692E0352}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F76BB386-1365-4A69-9993-9B42692E0352}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
